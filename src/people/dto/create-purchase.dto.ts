@@ -4,4 +4,5 @@ export class CreatePurchaseDto {
   minPrice: number;
   maxPrice: number;
   pictureLink?: string;
+  hasDeal: boolean;
 }

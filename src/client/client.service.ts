@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreatePurchaseDto } from 'src/people/dto/create-purchase.dto';
-import { Client } from 'src/people/entities/client.entity';
-import { Offer } from 'src/people/entities/offer.entity';
-import { Purchase } from 'src/people/entities/purchase.entity';
+import { CreatePurchaseDto } from '../people/dto/create-purchase.dto';
+import { Client } from '../people/entities/client.entity';
+import { Offer } from '../people/entities/offer.entity';
+import { Purchase } from '../people/entities/purchase.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -80,7 +80,7 @@ export class ClientService {
           relations: { craftsman: true },
         }),
     );
-    purchase.offers = await Promise.all(offers)
+    purchase.offers = await Promise.all(offers);
     return purchase;
   }
 }

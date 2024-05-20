@@ -4,7 +4,7 @@ import { UpdatePersonDto } from './dto/update-person.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Person } from './entities/person.entity';
 import { EntityManager, Repository } from 'typeorm';
-import { Address } from 'src/address/address.entity';
+import { Address } from '../address/address.entity';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { Client } from './entities/client.entity';
 import { CreateCraftsmanDto } from './dto/create-craftsman.dto';
@@ -41,7 +41,7 @@ export class PeopleService {
 
   async update(id: number, updatePersonDto: UpdatePersonDto) {
     const update = new Person(updatePersonDto);
-    const person = await this.personRepository.findOneBy({ id });
+    await this.personRepository.findOneBy({ id });
     update.id = id;
     return await this.personRepository.save(update);
   }

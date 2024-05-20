@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Client } from 'src/people/entities/client.entity';
-import { Craftsman } from 'src/people/entities/craftsman.entity';
-import { Deal } from 'src/people/entities/deal.entity';
-import { Offer } from 'src/people/entities/offer.entity';
-import { Purchase } from 'src/people/entities/purchase.entity';
+import { UpdateDealDto } from '../people/dto/update-deal.dto';
+import { Deal } from '../people/entities/deal.entity';
+import { Offer } from '../people/entities/offer.entity';
+import { Purchase } from '../people/entities/purchase.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -14,33 +13,46 @@ export class PurchaseService {
     private readonly purchaseRepository: Repository<Purchase>,
     @InjectRepository(Offer)
     private readonly offerRepository: Repository<Offer>,
-    @InjectRepository(Client)
-    private readonly clientRepository: Repository<Client>,
-    @InjectRepository(Craftsman)
-    private readonly craftsmanRepository: Repository<Craftsman>,
     @InjectRepository(Deal)
     private readonly dealRepository: Repository<Deal>,
   ) {}
 
-  async createDeal(
-    purchaseId: number,
-    clientId: number,
-    craftsmaId: number,
-    offerId: number,
-  ) {
-    const purchase = await this.purchaseRepository.findOneBy({
-      id: purchaseId,
+  async createDeal(purchaseId: number, offerId: number) {
+    const purchase = await this.purchaseRepository.findOne({
+      where: { id: purchaseId },
+      relations: { client: true },
     });
-    const client = await this.clientRepository.findOneBy({ id: clientId });
-    const craftsman = await this.craftsmanRepository.findOneBy({
-      id: craftsmaId,
+    const offer = await this.offerRepository.findOne({
+      where: { id: offerId },
+      relations: { craftsman: true },
     });
-    const offer = await this.offerRepository.findOneBy({ id: offerId });
     const deal = new Deal({});
-    deal.client = client;
     deal.purchase = purchase;
-    deal.craftsman = craftsman;
     deal.offer = offer;
     return this.dealRepository.save(deal);
+  }
+
+  async findDealById(dealId: number) {
+    const deal = await this.dealRepository.findOne({
+      where: { id: dealId },
+      relations: { offer: true, purchase: true },
+    });
+    return deal;
+  }
+
+  async updateDeal(dealId: number, updateDealDto: UpdateDealDto) {
+    const deal = await this.dealRepository.findOne({
+      where: { id: dealId },
+      relations: { purchase: true, offer: true },
+    });
+    deal.doing = updateDealDto.doing;
+    deal.transporting = updateDealDto.transporting;
+    deal.delivered = updateDealDto.delivered;
+    return this.dealRepository.save(deal);
+  }
+
+  async removeDeal(dealId: number) {
+    await this.dealRepository.delete(dealId);
+    return 'Acordo excluído com sucesso!';
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateOfferDto } from 'src/people/dto/create-offer.dto';
-import { Craftsman } from 'src/people/entities/craftsman.entity';
-import { Offer } from 'src/people/entities/offer.entity';
-import { Purchase } from 'src/people/entities/purchase.entity';
+import { CreateOfferDto } from '../people/dto/create-offer.dto';
+import { Craftsman } from '../people/entities/craftsman.entity';
+import { Offer } from '../people/entities/offer.entity';
+import { Purchase } from '../people/entities/purchase.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()

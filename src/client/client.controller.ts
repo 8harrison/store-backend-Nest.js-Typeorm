@@ -8,16 +8,12 @@ import {
   Post,
 } from '@nestjs/common';
 import { ClientService } from './client.service';
-import { CreatePurchaseDto } from 'src/people/dto/create-purchase.dto';
-import { ResponseMessage } from 'src/response.message';
-import { PurchaseService } from 'src/purchase/purchase.service';
+import { CreatePurchaseDto } from '../people/dto/create-purchase.dto';
+import { ResponseMessage } from '../response.message';
 
 @Controller('clients')
 export class ClientController {
-  constructor(
-    private readonly clientService: ClientService,
-    private readonly purchaseService: PurchaseService,
-  ) {}
+  constructor(private readonly clientService: ClientService) {}
 
   @Post(':clientId/purchase')
   async createPurchase(
@@ -74,21 +70,5 @@ export class ClientController {
       +purchaseId,
     );
     return new ResponseMessage('Success', purchase);
-  }
-
-  @Post(':clientId/purchase/:purchaseId/craftsman/:craftsmanId/offer/:offerId')
-  async createDeal(
-    @Param('clientId') clientId: string,
-    @Param('purchaseId') purchaseId: string,
-    @Param('craftsmanId') craftsmanId: string,
-    @Param('offerId') offerId: string,
-  ) {
-    const deal = await this.purchaseService.createDeal(
-      +purchaseId,
-      +clientId,
-      +craftsmanId,
-      +offerId,
-    );
-    return new ResponseMessage('Success', deal);
   }
 }

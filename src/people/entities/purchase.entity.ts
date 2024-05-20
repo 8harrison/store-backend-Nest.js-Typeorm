@@ -1,7 +1,6 @@
-import { AbstractEntity } from 'src/abstract.entity';
+import { AbstractEntity } from '../../abstract.entity';
 import {
   Column,
-  Double,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -9,7 +8,7 @@ import {
   OneToOne,
 } from 'typeorm';
 import { Client } from './client.entity';
-import { DecimalColumnTransform } from 'src/utils/decimalColumnTRansformer';
+import { DecimalColumnTransform } from '../../utils/decimalColumnTRansformer';
 import { Offer } from './offer.entity';
 import { Deal } from './deal.entity';
 
@@ -35,8 +34,10 @@ export class Purchase extends AbstractEntity<Purchase> {
   maxPrice: number;
   @Column({ name: 'picture_link', default: '' })
   pictureLink: string;
+  @Column({ name: 'has_deal', default: false })
+  hasDeal: boolean;
   @ManyToOne(() => Client, (client) => client.purchases)
-  @JoinColumn({name: 'client_id'})
+  @JoinColumn({ name: 'client_id' })
   client: Client;
 
   @OneToMany(() => Offer, (offer) => offer.purchase, { cascade: true })

@@ -1,5 +1,5 @@
-import { AbstractEntity } from 'src/abstract.entity';
-import { DecimalColumnTransform } from 'src/utils/decimalColumnTRansformer';
+import { AbstractEntity } from '../../abstract.entity';
+import { DecimalColumnTransform } from '../../utils/decimalColumnTRansformer';
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from 'typeorm';
 import { Craftsman } from './craftsman.entity';
 import { Purchase } from './purchase.entity';

@@ -8,8 +8,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { CraftsmanService } from './craftsman.service';
-import { CreateOfferDto } from 'src/people/dto/create-offer.dto';
-import { ResponseMessage } from 'src/response.message';
+import { CreateOfferDto } from '../people/dto/create-offer.dto';
+import { ResponseMessage } from '../response.message';
 
 @Controller('craftsmen')
 export class CraftsmanController {

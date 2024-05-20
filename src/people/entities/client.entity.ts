@@ -1,8 +1,7 @@
-import { AbstractEntity } from 'src/abstract.entity';
+import { AbstractEntity } from '../../abstract.entity';
 import { Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
 import { Person } from './person.entity';
 import { Purchase } from './purchase.entity';
-import { Deal } from './deal.entity';
 
 @Entity()
 export class Client extends AbstractEntity<Client> {
@@ -12,7 +11,4 @@ export class Client extends AbstractEntity<Client> {
 
   @OneToMany(() => Purchase, (purchase) => purchase.client, { cascade: true })
   purchases: Purchase[];
-
-  @OneToOne(() => Deal, (deal) => deal.client)
-  deal: Deal;
 }

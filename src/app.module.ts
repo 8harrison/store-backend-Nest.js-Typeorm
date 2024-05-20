@@ -1,4 +1,9 @@
-import { Module } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
@@ -19,15 +24,46 @@ import { CraftsmanController } from './craftsman/craftsman.controller';
 import { CraftsmanService } from './craftsman/craftsman.service';
 import { Deal } from './people/entities/deal.entity';
 import { PurchaseService } from './purchase/purchase.service';
+import { PurchaseController } from './purchase/purchase.controller';
+import { Chat } from './entities/chat.entity';
+import { PeopleMiddleware } from './middlewares/people.middleware';
 
 @Module({
   imports: [
     DatabaseModule,
     ConfigModule.forRoot({ isGlobal: true }),
     PeopleModule,
-    TypeOrmModule.forFeature([Person, Address, Client, Craftsman, Purchase, Offer, Deal]),    
+    TypeOrmModule.forFeature([
+      Person,
+      Address,
+      Client,
+      Craftsman,
+      Purchase,
+      Offer,
+      Deal,
+      Chat,
+    ]),
   ],
-  controllers: [AppController, PeopleController, ClientController, CraftsmanController],
-  providers: [AppService, PeopleService, ClientService, CraftsmanService, PurchaseService],
+  controllers: [
+    AppController,
+    PeopleController,
+    ClientController,
+    CraftsmanController,
+    PurchaseController,
+  ],
+  providers: [
+    AppService,
+    PeopleService,
+    ClientService,
+    CraftsmanService,
+    PurchaseService,
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(PeopleMiddleware)
+      .exclude({ path: 'people', method: RequestMethod.GET })
+      .forRoutes(PeopleController);
+  }
+}

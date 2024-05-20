@@ -11,7 +11,7 @@ import { PeopleService } from './people.service';
 import { CreatePersonDto } from './dto/create-person.dto';
 import { UpdatePersonDto } from './dto/update-person.dto';
 import { CreateAddressDto } from './dto/create-address.dto';
-import { ResponseMessage } from 'src/response.message';
+import { ResponseMessage } from '../response.message';
 import { Person } from './entities/person.entity';
 import { CreateCraftsmanDto } from './dto/create-craftsman.dto';
 
