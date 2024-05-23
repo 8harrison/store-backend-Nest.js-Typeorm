@@ -8,7 +8,7 @@ const masterConnection = new DataSource({
   username: process.env.MYSQL_USERNAME,
   password: process.env.MYSQL_PASSWORD,
   database: process.env.MYSQL_DATABASE,
-  entities: ['./**/*.entity.ts'],
+  entities: ['../dist/**/*.entity{.ts, .js}'],
   logging: false,
   name: 'master',
   migrationsRun: false,
@@ -25,7 +25,11 @@ export async function databaseIntegrationSetup() {
     await masterConnection.initialize();
     await masterConnection.query('CREATE DATABASE test_store_db;');
   } catch (err) {
+    process.stderr.write(
+      `${err instanceof Error ? err.stack : JSON.stringify(err)}\n`,
+    );
     console.log(err);
+    process.exit(1);
   }
 
   return connection;
@@ -36,6 +40,10 @@ export async function closeDatabaseIntegration() {
     await masterConnection.query('DROP DATABASE test_store_db;');
     await masterConnection.destroy();
   } catch (err) {
+    process.stderr.write(
+      `${err instanceof Error ? err.stack : JSON.stringify(err)}\n`,
+    );
     console.log(err);
+    process.exit(1);
   }
 }

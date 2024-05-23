@@ -1,5 +1,5 @@
-import { AbstractEntity } from '../abstract.entity';
-import { Deal } from '../people/entities/deal.entity';
+import { AbstractEntity } from './abstract.entity';
+import { Deal } from './deal.entity';
 import { Entity, JoinColumn, OneToOne } from 'typeorm';
 
 @Entity()
